@@ -6,7 +6,7 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 14:13:56 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/05/05 14:15:50 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/05/11 14:49:25 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 int	ft_atoi(const char *nptr)
 {
-	int	i;
-	int	sign;
-	int	res;
+	int			i;
+	int			sign;
+	long long	res;
 
 	i = 0;
 	sign = 1;
@@ -37,7 +37,7 @@ int	ft_atoi(const char *nptr)
 	return (sign * res);
 }
 
-size_t	ft_strlen(const char *s)
+int	ft_strlen(const char *s)
 {
 	int	i;
 

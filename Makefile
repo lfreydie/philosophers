@@ -6,7 +6,7 @@
 #    By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/07 15:01:41 by lfreydie          #+#    #+#              #
-#    Updated: 2023/05/05 14:09:30 by lfreydie         ###   ########.fr        #
+#    Updated: 2023/05/10 15:33:05 by lfreydie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@
 CC ?= gcc
 NAME := philo
 NAME_B := philo_bonus
-CFLAGS += -Wall -Wextra -Werror -g3
+CFLAGS += -Wall -Wextra -Werror -pthread -g
 
 # -------- Directories -------- #
 
@@ -41,7 +41,7 @@ END=\033[0m
 
 # ----------- Files ----------- #
 
-SRC_F =	pipex.c	utils.c	exec.c exit.c
+SRC_F =	philo.c	utils.c	init.c	exit.c
 SRC = $(addprefix $(SRC_DIR)/, $(SRC_F))
 OBJ = $(patsubst $(SRC_DIR)/%,$(OBJ_DIR)/%,$(SRC:.c=.o))
 
