@@ -6,7 +6,7 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 13:22:50 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/05/12 11:49:48 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/05/12 13:33:39 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,6 @@ typedef struct s_philo
 	int				l_fork;
 	int				last_meal;
 	int				nb_meal;
-	pthread_mutex_t	check_full;
-	int				full;
 	struct s_infos	*infos;
 }	t_philo;
 

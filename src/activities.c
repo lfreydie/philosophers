@@ -6,7 +6,7 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:06:12 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/05/12 12:10:05 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/05/12 13:52:56 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,13 @@ int	ft_take_forks(t_philo *perso)
 {
 	pthread_mutex_lock(&perso->infos->tab_fork[perso->r_fork]);
 	pthread_mutex_lock(&perso->infos->write);
-	printf("%d %d has taken a fork", running_time(perso->infos), perso->id);
+	printf("%d %d has taken a fork\n", \
+	running_time(perso->infos), perso->id);
 	pthread_mutex_unlock(&perso->infos->write);
 	pthread_mutex_lock(&perso->infos->tab_fork[perso->l_fork]);
 	pthread_mutex_lock(&perso->infos->write);
-	printf("%d %d has taken a fork", running_time(perso->infos), perso->id);
+	printf("%d %d has taken a fork\n", \
+	running_time(perso->infos), perso->id);
 	pthread_mutex_unlock(&perso->infos->write);
 	if (check_dead(*perso) == 1)
 	{
@@ -43,7 +45,7 @@ int	ft_eat(t_philo *perso)
 	}
 	pthread_mutex_lock(&perso->infos->write);
 	perso->last_meal = running_time(perso->infos);
-	printf("%d %d is eating", perso->last_meal * 1000, perso->id);
+	printf("%d %d is eating\n", running_time(perso->infos), perso->id);
 	pthread_mutex_unlock(&perso->infos->write);
 	if (ft_waiting(perso, perso->infos->t_eat) == 1)
 	{
@@ -65,7 +67,7 @@ int	ft_think(t_philo *perso)
 	t_think = (perso->infos->t_die - \
 	(perso->infos->t_eat + perso->infos->t_sleep)) / 2;
 	pthread_mutex_lock(&perso->infos->write);
-	printf("%d %d is thinking", running_time(perso->infos), perso->id);
+	printf("%d %d is thinking\n", running_time(perso->infos), perso->id);
 	pthread_mutex_unlock(&perso->infos->write);
 	if (ft_waiting(perso, t_think) == 1)
 		return (1);
@@ -77,7 +79,7 @@ int	ft_sleep(t_philo *perso)
 	if (check_dead(*perso) == 1)
 		return (1);
 	pthread_mutex_lock(&perso->infos->write);
-	printf("%d %d is sleeping", running_time(perso->infos), perso->id);
+	printf("%d %d is sleeping\n", running_time(perso->infos), perso->id);
 	pthread_mutex_unlock(&perso->infos->write);
 	if (ft_waiting(perso, perso->infos->t_sleep) == 1)
 		return (1);

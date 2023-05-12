@@ -6,7 +6,7 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 14:13:56 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/05/12 11:39:19 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/05/12 13:49:56 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,10 @@ int	check_dead(t_philo perso)
 		pthread_mutex_lock(&perso.infos->check_dead);
 		perso.infos->dead = 1;
 		pthread_mutex_unlock(&perso.infos->check_dead);
+		pthread_mutex_lock(&perso.infos->write);
+		perso.last_meal = running_time(perso.infos);
+		printf("%d %d is dead\n", running_time(perso.infos), perso.id);
+		pthread_mutex_unlock(&perso.infos->write);
 		return (1);
 	}
 	return (0);

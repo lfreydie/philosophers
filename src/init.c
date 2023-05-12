@@ -6,7 +6,7 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 11:06:39 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/05/12 12:01:25 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/05/12 13:31:28 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,6 @@ t_infos	*ft_init(int ac, char **av)
 	get_infos(infos, ac, av);
 	fork_set(infos);
 	philo_set(infos);
-	printf("nb_philo : %d, t_die : %d, t_eat : %d, t_sleep : %d, \
-	nb_cycle : %d\n", infos->nb_philo, infos->t_die, \
-	infos->t_eat, infos->t_sleep, infos->nb_cycle);
 	return (infos);
 }
 
@@ -76,6 +73,11 @@ void	philo_set(t_infos *infos)
 	while (++i < infos->nb_philo)
 	{
 		infos->tab_philo[i].id = i + 1;
+		infos->tab_philo[i].r_fork = i;
+		if (i == 0)
+			infos->tab_philo[i].l_fork = infos->nb_philo - 1;
+		else
+			infos->tab_philo[i].l_fork = i - 1;
 		infos->tab_philo[i].infos = infos;
 	}
 }
