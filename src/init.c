@@ -6,7 +6,7 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 11:06:39 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/05/11 14:16:57 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/05/12 12:01:25 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ t_infos	*ft_init(int ac, char **av)
 	get_infos(infos, ac, av);
 	fork_set(infos);
 	philo_set(infos);
-	printf("nb_philo : %d, t_die : %ld, t_eat : %ld, t_sleep : %ld, \
+	printf("nb_philo : %d, t_die : %d, t_eat : %d, t_sleep : %d, \
 	nb_cycle : %d\n", infos->nb_philo, infos->t_die, \
 	infos->t_eat, infos->t_sleep, infos->nb_cycle);
 	return (infos);
@@ -38,6 +38,7 @@ void	get_infos(t_infos *infos, int ac, char **av)
 	infos->t_die = ft_atoi(av[2]);
 	infos->t_eat = ft_atoi(av[3]);
 	infos->t_sleep = ft_atoi(av[4]);
+	infos->ac = ac;
 	if (infos->nb_philo < 1 || infos->t_die < 0 || \
 	infos->t_eat < 0 || infos->t_sleep < 0)
 		ft_exit(infos, ERR_ARG);
@@ -48,7 +49,7 @@ void	get_infos(t_infos *infos, int ac, char **av)
 			ft_exit(infos, ERR_ARG);
 	}
 	else
-		infos->nb_cycle = -1;
+		infos->nb_cycle = 1;
 }
 
 void	fork_set(t_infos *infos)

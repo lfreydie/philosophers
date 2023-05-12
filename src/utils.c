@@ -6,7 +6,7 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 14:13:56 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/05/11 14:49:25 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/05/12 11:39:19 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,30 @@ int	ft_strlen(const char *s)
 	while (s[i])
 		i++;
 	return (i);
+}
+
+int	check_dead(t_philo perso)
+{
+	if (check_dead_all(perso.infos) == 1)
+		return (1);
+	if ((get_time(perso.infos) - perso.last_meal) >= perso.infos->t_die)
+	{
+		pthread_mutex_lock(&perso.infos->check_dead);
+		perso.infos->dead = 1;
+		pthread_mutex_unlock(&perso.infos->check_dead);
+		return (1);
+	}
+	return (0);
+}
+
+int	check_dead_all(t_infos *infos)
+{
+	pthread_mutex_lock(&infos->check_dead);
+	if (infos->dead == 1)
+	{
+		pthread_mutex_unlock(&infos->check_dead);
+		return (1);
+	}
+	pthread_mutex_unlock(&infos->check_dead);
+	return (0);
 }

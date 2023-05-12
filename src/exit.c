@@ -6,7 +6,7 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 14:56:39 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/05/11 15:18:46 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/05/12 12:03:44 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	free_infos(t_infos *infos)
 		{
 			i = -1;
 			while (++i < infos->nb_philo)
-				pthread_mutex_destroy(&infos->tab_philo[i]);
+				pthread_join(infos->tab_philo[i].thread, NULL);
 			free(infos->tab_philo);
 		}
 	}

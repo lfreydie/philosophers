@@ -6,7 +6,7 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 14:39:14 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/05/11 15:14:49 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/05/12 11:43:01 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	running_time(t_infos *infos)
 	return ((get_time(infos) - infos->t_start) * 1000);
 }
 
-void	ft_waiting(t_philo *perso, int time)
+int	ft_waiting(t_philo *perso, int time)
 {
 	int	start;
 
@@ -34,6 +34,8 @@ void	ft_waiting(t_philo *perso, int time)
 	while ((get_time(perso->infos) - start) < time)
 	{
 		usleep(1000);
-		check_dead(perso);
+		if (check_dead(*perso) == 1)
+			return (1);
 	}
+	return (0);
 }

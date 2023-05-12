@@ -6,7 +6,7 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 14:09:18 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/05/11 15:45:43 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/05/12 12:06:19 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ int	main(int ac, char **av)
 
 	infos = ft_init(ac, av);
 	i = -1;
-	pthread_create(&infos->super, NULL, ft_supervisor, &infos);
 	infos->t_start = get_time(infos);
 	while (++i < infos->nb_philo)
 	{
@@ -27,21 +26,25 @@ int	main(int ac, char **av)
 		ft_launch, &infos->tab_philo[i]);
 		// error ?
 	}
+	free_infos(infos);
 }
 
-void	ft_launch(void *data)
+void	*ft_launch(void *data)
 {
 	t_philo	*perso;
 
 	perso = (t_philo *)data;
-	ft_eat(perso);
-	ft_sleep(perso);
-	ft_think(perso);
+	while (perso->nb_meal <= perso->infos->nb_cycle)
+	{
+		if (ft_eat(perso) == 1)
+			break ;
+		if (perso->infos->ac == 6)
+			perso->nb_meal++;
+		if (ft_sleep(perso) == 1)
+			break ;
+		if (ft_think(perso) == 1)
+			break ;
+	}
+	return (NULL);
 }
 
-void	ft_supervisor(void *data)
-{
-	t_infos	*infos;
-
-	infos = data;
-}
