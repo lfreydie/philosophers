@@ -6,7 +6,7 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 11:06:39 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/05/12 13:31:28 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/05/12 15:18:52 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ t_infos	*ft_init(int ac, char **av)
 		ft_exit(NULL, ERR_ARG);
 	memset(infos, 0, sizeof(*infos));
 	pthread_mutex_init(&infos->write, NULL);
+	pthread_mutex_init(&infos->check_dead, NULL);
 	get_infos(infos, ac, av);
 	fork_set(infos);
 	philo_set(infos);
@@ -53,7 +54,7 @@ void	fork_set(t_infos *infos)
 {
 	int	i;
 
-	infos->tab_fork = malloc(sizeof(pthread_mutex_t) * infos->nb_philo);
+	infos->tab_fork = malloc(sizeof(pthread_mutex_t) * (infos->nb_philo));
 	if (!infos->tab_fork)
 		ft_exit(infos, ERR_MAL);
 	i = -1;
@@ -79,5 +80,6 @@ void	philo_set(t_infos *infos)
 		else
 			infos->tab_philo[i].l_fork = i - 1;
 		infos->tab_philo[i].infos = infos;
+		printf("philo[%d] = l = %d || r = %d\n",infos->tab_philo[i].id, infos->tab_philo[i].l_fork, infos->tab_philo[i].r_fork);
 	}
 }

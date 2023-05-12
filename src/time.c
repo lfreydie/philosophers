@@ -6,7 +6,7 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 14:39:14 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/05/12 13:50:01 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/05/12 15:07:07 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,10 @@ int	running_time(t_infos *infos)
 
 int	ft_waiting(t_philo *perso, int time)
 {
-	while ((get_time(perso->infos) - perso->last_meal) < time)
+	int	start;
+
+	start = get_time(perso->infos);
+	while ((get_time(perso->infos) - start) < time)
 	{
 		usleep(1000);
 		if (check_dead(*perso) == 1)
