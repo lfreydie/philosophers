@@ -6,7 +6,7 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 11:06:39 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/05/12 15:18:52 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/05/17 17:03:53 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,11 +75,15 @@ void	philo_set(t_infos *infos)
 	{
 		infos->tab_philo[i].id = i + 1;
 		infos->tab_philo[i].r_fork = i;
-		if (i == 0)
+		if (!(infos->nb_philo % 2) && infos->tab_philo[i].id == infos->nb_philo)
+		{
+			infos->tab_philo[i].r_fork = i - 1;
+			infos->tab_philo[i].l_fork = i;
+		}
+		else if (i == 0)
 			infos->tab_philo[i].l_fork = infos->nb_philo - 1;
 		else
 			infos->tab_philo[i].l_fork = i - 1;
 		infos->tab_philo[i].infos = infos;
-		printf("philo[%d] = l = %d || r = %d\n",infos->tab_philo[i].id, infos->tab_philo[i].l_fork, infos->tab_philo[i].r_fork);
 	}
 }

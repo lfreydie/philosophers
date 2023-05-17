@@ -6,7 +6,7 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 13:22:50 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/05/12 13:33:39 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/05/17 14:58:46 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void	philo_set(t_infos *infos);
 //	PHILO
 void	*ft_launch(void *philo);
 void	ft_supervisor(void *data);
+void	ft_one_philo(t_philo *perso);
 
 //	ACTIVITIES
 int		ft_take_forks(t_philo *perso);
@@ -75,8 +76,8 @@ int		ft_waiting(t_philo *perso, int time);
 //	UTILS
 int		ft_atoi(const char *nptr);
 int		ft_strlen(const char *s);
-int		check_dead(t_philo perso);
-int		check_dead_all(t_infos *infos);
+int		check_dead(t_philo *perso);
+int		write_lock(t_philo *perso);
 
 //	EXIT
 void	ft_exit(t_infos *infos, char *msg);
