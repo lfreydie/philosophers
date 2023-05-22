@@ -6,7 +6,7 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 13:22:50 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/05/17 14:58:46 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/05/22 15:01:24 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ typedef struct s_infos
 
 # define ERR_ARG "arguments invalid\n"
 # define ERR_MAL "erreur malloc\n"
+# define ERR 0
+# define SUCCESS 1
 
 //	INIT
 t_infos	*ft_init(int ac, char **av);
@@ -59,11 +61,11 @@ void	philo_set(t_infos *infos);
 
 //	PHILO
 void	*ft_launch(void *philo);
-void	ft_supervisor(void *data);
-void	ft_one_philo(t_philo *perso);
+void	*ft_one_philo(void *data);
 
 //	ACTIVITIES
-int		ft_take_forks(t_philo *perso);
+int		take_forks(t_philo *perso);
+void	drop_forks(t_philo *perso);
 int		ft_eat(t_philo *perso);
 int		ft_think(t_philo *perso);
 int		ft_sleep(t_philo *perso);
@@ -77,7 +79,7 @@ int		ft_waiting(t_philo *perso, int time);
 int		ft_atoi(const char *nptr);
 int		ft_strlen(const char *s);
 int		check_dead(t_philo *perso);
-int		write_lock(t_philo *perso);
+int		write_msg(t_philo *perso, char *msg);
 
 //	EXIT
 void	ft_exit(t_infos *infos, char *msg);

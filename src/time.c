@@ -6,7 +6,7 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 14:39:14 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/05/17 10:36:21 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/05/22 14:56:20 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	get_time(t_infos *infos)
 	struct timeval	time;
 	int				ms;
 
-	if (gettimeofday(&time, NULL) < 0)
+	if (gettimeofday(&time, NULL) == -1)
 		ft_exit(infos, "didn't get time");
 	ms = time.tv_sec * 1000 + time.tv_usec / 1000;
 	return (ms);
@@ -37,7 +37,7 @@ int	ft_waiting(t_philo *perso, int time)
 	{
 		usleep(1000);
 		if (check_dead(perso) == 1)
-			return (1);
+			return (ERR);
 	}
-	return (0);
+	return (SUCCESS);
 }
