@@ -6,7 +6,7 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:06:12 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/05/22 14:59:48 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/05/23 14:21:14 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	take_forks(t_philo *perso)
 {
-	if (!perso->id % 2)
+	if (!(perso->id % 2))
 	{
 		pthread_mutex_lock(&perso->infos->tab_fork[perso->l_fork]);
 		if (!write_msg(perso, "%d %d has taken a fork\n"))
@@ -53,12 +53,14 @@ void	drop_forks(t_philo *perso)
 
 int	ft_eat(t_philo *perso)
 {
+	// if (!check_dead(perso))
+	// 	return (ERR);
 	if (!take_forks(perso))
 		return (ERR);
 	perso->last_meal = write_msg(perso, "%d %d is eating\n");
 	if (!perso->last_meal)
 		return (drop_forks(perso), ERR);
-	if (ft_waiting(perso, perso->infos->t_eat))
+	if (!ft_waiting(perso, perso->infos->t_eat))
 		return (drop_forks(perso), ERR);
 	drop_forks(perso);
 	return (SUCCESS);

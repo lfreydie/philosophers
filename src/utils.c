@@ -6,7 +6,7 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 14:13:56 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/05/22 14:57:20 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/05/23 14:12:43 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	check_dead(t_philo *perso)
 	{
 		pthread_mutex_unlock(&perso->infos->check_dead);
 		pthread_mutex_unlock(&perso->infos->write);
-		return (1);
+		return (ERR);
 	}
 	if ((get_time(perso->infos) - perso->last_meal) >= perso->infos->t_die)
 	{
@@ -66,11 +66,11 @@ int	check_dead(t_philo *perso)
 		printf("%d %d died\n", running_time(perso->infos), perso->id);
 		pthread_mutex_unlock(&perso->infos->check_dead);
 		pthread_mutex_unlock(&perso->infos->write);
-		return (1);
+		return (ERR);
 	}
 	pthread_mutex_unlock(&perso->infos->check_dead);
 	pthread_mutex_unlock(&perso->infos->write);
-	return (0);
+	return (SUCCESS);
 }
 
 int	write_msg(t_philo *perso, char *msg)
@@ -95,8 +95,8 @@ int	write_msg(t_philo *perso, char *msg)
 		return (ERR);
 	}
 	pthread_mutex_unlock(&perso->infos->check_dead);
-	printf(msg, running_time(perso->infos), perso->id);
 	time = get_time(perso->infos);
+	printf(msg, time - perso->infos->t_start, perso->id);
 	pthread_mutex_unlock(&perso->infos->write);
 	return (time);
 }
