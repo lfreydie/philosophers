@@ -6,7 +6,7 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:06:12 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/05/23 14:21:14 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/05/24 09:51:49 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,6 @@ void	drop_forks(t_philo *perso)
 
 int	ft_eat(t_philo *perso)
 {
-	// if (!check_dead(perso))
-	// 	return (ERR);
 	if (!take_forks(perso))
 		return (ERR);
 	perso->last_meal = write_msg(perso, "%d %d is eating\n");
@@ -74,7 +72,10 @@ int	ft_think(t_philo *perso)
 	(perso->infos->t_eat + perso->infos->t_sleep)) / 2;
 	if (!write_msg(perso, "%d %d is thinking\n"))
 		return (ERR);
-	return (ft_waiting(perso, t_think));
+	if (perso->infos->t_die >= 2 * perso->infos->t_eat)
+		return (ft_waiting(perso, t_think));
+	else
+		return (ft_waiting(perso, perso->infos->t_die));
 }
 
 int	ft_sleep(t_philo *perso)
