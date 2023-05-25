@@ -6,7 +6,7 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 11:06:39 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/05/24 17:38:14 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/05/25 15:47:36 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_infos	*ft_init(int ac, char **av)
 	infos->write = ft_sem_open("/write", 1);
 	if (!infos->write)
 		ft_exit (infos, "1");
-	infos->check_dead = ft_sem_open("/check_dead", 1);
+	infos->check_dead = ft_sem_open("/check_dead", 4);
 	if (!infos->check_dead)
 		ft_exit (infos, "2");
 	get_infos(infos, ac, av);

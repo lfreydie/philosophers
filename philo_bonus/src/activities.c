@@ -6,7 +6,7 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:06:12 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/05/24 17:25:09 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/05/25 12:52:18 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,33 +14,27 @@
 
 int	take_forks(t_philo *perso)
 {
-	if (!(perso->id % 2))
-	{
-		sem_wait(perso->infos->forks);
-		if (!write_msg(perso, "%d %d has taken a fork\n"))
-			return \
-			(sem_post(perso->infos->forks), ERR);
-		sem_wait(perso->infos->forks);
-		if (!write_msg(perso, "%d %d has taken a fork\n"))
-			return (sem_post(perso->infos->forks),
-				sem_post(perso->infos->forks), ERR);
-	}
-	else
-	{
-		sem_wait(perso->infos->forks);
-		if (!write_msg(perso, "%d %d has taken a fork\n"))
-			return \
-			(sem_post(perso->infos->forks), ERR);
-		sem_wait(perso->infos->forks);
-		if (!write_msg(perso, "%d %d has taken a fork\n"))
-			return (sem_post(perso->infos->forks),
-				sem_post(perso->infos->forks), ERR);
-	}
+	int	semval;
+
+	sem_wait(perso->infos->forks);
+	sem_getvalue(perso->infos->forks, &semval);
+	printf("%d by %d\n", semval, perso->id);
+	if (!write_msg(perso, "%d %d has taken a fork\n"))
+		return \
+		(sem_post(perso->infos->forks), ERR);
+	sem_wait(perso->infos->forks);
+	sem_getvalue(perso->infos->forks, &semval);
+	printf("%d by %d\n", semval, perso->id);
+	if (!write_msg(perso, "%d %d has taken a fork\n"))
+		return (sem_post(perso->infos->forks),
+			sem_post(perso->infos->forks), ERR);
 	return (SUCCESS);
 }
 
 int	ft_eat(t_philo *perso)
 {
+	int	semval;
+
 	if (!take_forks(perso))
 		return (ERR);
 	perso->last_meal = write_msg(perso, "%d %d is eating\n");
@@ -51,7 +45,11 @@ int	ft_eat(t_philo *perso)
 		return (sem_post(perso->infos->forks),
 			sem_post(perso->infos->forks), ERR);
 	sem_post(perso->infos->forks);
+	sem_getvalue(perso->infos->forks, &semval);
+	printf("%d dropped %d\n", semval, perso->id);
 	sem_post(perso->infos->forks);
+	sem_getvalue(perso->infos->forks, &semval);
+	printf("%d dropped %d\n", semval, perso->id);
 	return (SUCCESS);
 }
 

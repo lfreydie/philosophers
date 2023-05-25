@@ -6,7 +6,7 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 14:13:56 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/05/24 17:39:12 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/05/25 15:49:47 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,25 +51,24 @@ int	ft_strlen(const char *s)
 
 int	check_dead(t_philo *perso)
 {
+	int	semval;
+
 	sem_wait(perso->infos->write);
-	sem_wait(perso->infos->check_dead);
 	if (perso->infos->dead == 1)
 	{
-		sem_post(perso->infos->check_dead);
 		sem_post(perso->infos->write);
 		return (ERR);
 	}
 	else if ((get_time(perso->infos) - perso->last_meal) >= perso->infos->t_die)
 	{
-		printf("%d ", perso->infos->dead);
-		perso->infos->dead = 1;
+		sem_post(&perso->infos->check_dead);
 		perso->last_meal = running_time(perso->infos);
 		printf("%d %d died\n", running_time(perso->infos), perso->id);
-		sem_post(perso->infos->check_dead);
+		sem_getvalue(perso->infos->forks, &semval);
+		printf("%d still %d\n", semval, perso->id);
 		sem_post(perso->infos->write);
 		return (ERR);
 	}
-	sem_post(perso->infos->check_dead);
 	sem_post(perso->infos->write);
 	return (SUCCESS);
 }
@@ -79,23 +78,19 @@ int	write_msg(t_philo *perso, char *msg)
 	int	time;
 
 	sem_wait(perso->infos->write);
-	sem_wait(perso->infos->check_dead);
 	if (perso->infos->dead == 1)
 	{
-		sem_post(perso->infos->check_dead);
 		sem_post(perso->infos->write);
 		return (ERR);
 	}
 	else if ((get_time(perso->infos) - perso->last_meal) >= perso->infos->t_die)
 	{
-		perso->infos->dead = 1;
+		sem_post(&perso->infos->check_dead);
 		perso->last_meal = running_time(perso->infos);
 		printf("%d %d died\n", running_time(perso->infos), perso->id);
-		sem_post(perso->infos->check_dead);
 		sem_post(perso->infos->write);
 		return (ERR);
 	}
-	sem_post(perso->infos->check_dead);
 	time = get_time(perso->infos);
 	printf(msg, time - perso->infos->t_start, perso->id);
 	sem_post(perso->infos->write);
