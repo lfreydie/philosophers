@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lefreydier <lefreydier@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 10:34:18 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/05/25 12:28:03 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/05/26 13:38:50 by lefreydier       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ void	philo_set(t_infos *infos);
 void	fork_process(t_infos *infos);
 void	ft_launch(t_philo *perso);
 void	ft_one_philo(t_infos *infos);
+void	*wait_to_die(void *data);
 
 //	ACTIVITIES
 int		take_forks(t_philo *perso);

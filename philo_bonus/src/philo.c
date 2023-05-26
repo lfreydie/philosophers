@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lefreydier <lefreydier@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 14:09:18 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/05/25 15:48:12 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/05/26 14:05:17 by lefreydier       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ int	main(int ac, char **av)
 	int		semval;
 
 	infos = ft_init(ac, av);
-	sem_getvalue(infos->forks, &semval);
-	printf("%d beginning\n", semval);
+	// sem_getvalue(infos->forks, &semval);
+	// printf("%d beginning\n", semval);
 	infos->t_start = get_time(infos);
 	if (infos->nb_philo == 1)
 		ft_one_philo(infos);
@@ -30,6 +30,8 @@ int	main(int ac, char **av)
 	i = -1;
 	while (++i < infos->nb_philo)
 		waitpid(infos->tab_philo[i].pid, &status, 0);
+	sem_getvalue(infos->check_dead, &semval);
+	printf("end ressources : %d\n", semval);
 	sem_end(infos);
 	free_infos(infos);
 	return (0);
@@ -58,6 +60,11 @@ void	fork_process(t_infos *infos)
 
 void	ft_launch(t_philo *perso)
 {
+	int	semval;
+
+	sem_wait(perso->infos->check_dead);
+	sem_getvalue(perso->infos->check_dead, &semval);
+	printf("alive : %d , ressources : %d\n", perso->id, semval);
 	pthread_create(&perso->thread, NULL, wait_to_die, perso);
 	if (perso->id % 2 == 0)
 		usleep(200);
@@ -94,10 +101,13 @@ void	ft_one_philo(t_infos *infos)
 void	*wait_to_die(void *data)
 {
 	t_philo	*perso;
+	int		semval;
 
 	perso = data;
-	sem_wait(&perso->infos->check_dead);
-	sem_wait(&perso->infos->check_dead);
+	sem_wait(perso->infos->check_dead);
+	sem_getvalue(perso->infos->check_dead, &semval);
+	printf("dead : %d , ressources : %d\n", perso->id, semval);
 	perso->infos->dead = 1;
-	sem_post(&perso->infos->check_dead);
+	sem_post(perso->infos->check_dead);
+	return (NULL);
 }

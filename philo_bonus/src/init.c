@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lefreydier <lefreydier@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 11:06:39 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/05/25 15:47:36 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/05/26 14:01:56 by lefreydier       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@ t_infos	*ft_init(int ac, char **av)
 	if (!infos->forks)
 		ft_exit(infos, ERR_MAL);
 	philo_set(infos);
-	printf("dead=%d, ac=%d, nb philo=%d, t die=%d, t eat=%d, t sleep=%d, nb cycle=%d\n",
-		infos->dead, infos->ac, infos->nb_philo, infos->t_die, infos->t_eat, infos->t_sleep, infos->nb_cycle);
+	// printf("dead=%d, ac=%d, nb philo=%d, t die=%d, t eat=%d, t sleep=%d, nb cycle=%d\n",
+		// infos->dead, infos->ac, infos->nb_philo, infos->t_die, infos->t_eat, infos->t_sleep, infos->nb_cycle);
 	return (infos);
 }
 
