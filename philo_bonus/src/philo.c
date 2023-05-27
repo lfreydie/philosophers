@@ -6,7 +6,7 @@
 /*   By: lefreydier <lefreydier@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 14:09:18 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/05/26 14:05:17 by lefreydier       ###   ########.fr       */
+/*   Updated: 2023/05/27 15:47:46 by lefreydier       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,10 @@ int	main(int ac, char **av)
 	t_infos	*infos;
 	int		status;
 	int		i;
-	int		semval;
+	// int		semval;
 
 	infos = ft_init(ac, av);
-	// sem_getvalue(infos->forks, &semval);
+	// sem_getvalue(infos->check_dead, &semval);
 	// printf("%d beginning\n", semval);
 	infos->t_start = get_time(infos);
 	if (infos->nb_philo == 1)
@@ -30,8 +30,8 @@ int	main(int ac, char **av)
 	i = -1;
 	while (++i < infos->nb_philo)
 		waitpid(infos->tab_philo[i].pid, &status, 0);
-	sem_getvalue(infos->check_dead, &semval);
-	printf("end ressources : %d\n", semval);
+	// sem_getvalue(infos->check_dead, &semval);
+	// printf("end ressources : %d\n", semval);
 	sem_end(infos);
 	free_infos(infos);
 	return (0);
@@ -41,6 +41,9 @@ void	fork_process(t_infos *infos)
 {
 	int		i;
 
+	i = -1;
+	while (++i < infos->nb_philo)
+		sem_wait(infos->check_dead);
 	i = -1;
 	while (++i < infos->nb_philo)
 	{
@@ -55,16 +58,19 @@ void	fork_process(t_infos *infos)
 			exit (0);
 		}
 	}
-
+	i = -1;
+	while (++i < infos->nb_philo)
+		sem_post(infos->check_dead);
 }
 
 void	ft_launch(t_philo *perso)
 {
-	int	semval;
+	// int	semval;
 
 	sem_wait(perso->infos->check_dead);
-	sem_getvalue(perso->infos->check_dead, &semval);
-	printf("alive : %d , ressources : %d\n", perso->id, semval);
+	// sem_getvalue(perso->infos->check_dead, &semval);
+	// printf("alive : %d , ressources : %d\n", perso->id, semval);
+	usleep(100);
 	pthread_create(&perso->thread, NULL, wait_to_die, perso);
 	if (perso->id % 2 == 0)
 		usleep(200);
@@ -101,12 +107,12 @@ void	ft_one_philo(t_infos *infos)
 void	*wait_to_die(void *data)
 {
 	t_philo	*perso;
-	int		semval;
+	// int		semval;
 
 	perso = data;
 	sem_wait(perso->infos->check_dead);
-	sem_getvalue(perso->infos->check_dead, &semval);
-	printf("dead : %d , ressources : %d\n", perso->id, semval);
+	// sem_getvalue(perso->infos->check_dead, &semval);
+	// printf("dead : %d , ressources : %d\n", perso->id, semval);
 	perso->infos->dead = 1;
 	sem_post(perso->infos->check_dead);
 	return (NULL);

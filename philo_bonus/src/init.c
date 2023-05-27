@@ -6,7 +6,7 @@
 /*   By: lefreydier <lefreydier@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 11:06:39 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/05/26 14:01:56 by lefreydier       ###   ########.fr       */
+/*   Updated: 2023/05/27 15:38:07 by lefreydier       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,16 @@ t_infos	*ft_init(int ac, char **av)
 	infos->write = ft_sem_open("/write", 1);
 	if (!infos->write)
 		ft_exit (infos, "1");
-	infos->check_dead = ft_sem_open("/check_dead", 4);
+	get_infos(infos, ac, av);
+	infos->check_dead = ft_sem_open("/check_dead", infos->nb_philo);
 	if (!infos->check_dead)
 		ft_exit (infos, "2");
-	get_infos(infos, ac, av);
 	infos->forks = ft_sem_open("/forks", infos->nb_philo);
 	if (!infos->forks)
 		ft_exit(infos, ERR_MAL);
 	philo_set(infos);
 	// printf("dead=%d, ac=%d, nb philo=%d, t die=%d, t eat=%d, t sleep=%d, nb cycle=%d\n",
-		// infos->dead, infos->ac, infos->nb_philo, infos->t_die, infos->t_eat, infos->t_sleep, infos->nb_cycle);
+	// 	infos->dead, infos->ac, infos->nb_philo, infos->t_die, infos->t_eat, infos->t_sleep, infos->nb_cycle);
 	return (infos);
 }
 

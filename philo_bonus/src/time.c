@@ -6,7 +6,7 @@
 /*   By: lefreydier <lefreydier@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 14:39:14 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/05/26 13:52:04 by lefreydier       ###   ########.fr       */
+/*   Updated: 2023/05/27 15:46:25 by lefreydier       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	ft_waiting(t_philo *perso, int time)
 	start = get_time(perso->infos);
 	while ((get_time(perso->infos) - start) < time)
 	{
-		usleep(1000);
+		usleep(500);
 		if (!write_msg(perso, NULL))
 			return (ERR);
 	}

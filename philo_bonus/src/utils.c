@@ -6,7 +6,7 @@
 /*   By: lefreydier <lefreydier@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 14:13:56 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/05/26 13:54:10 by lefreydier       ###   ########.fr       */
+/*   Updated: 2023/05/27 15:34:00 by lefreydier       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int	check_dead(t_philo *perso)
 		sem_post(perso->infos->check_dead);
 		perso->last_meal = running_time(perso->infos);
 		printf("%d %d died\n", running_time(perso->infos), perso->id);
+		usleep(500);
 		return (ERR);
 	}
 	return (SUCCESS);
