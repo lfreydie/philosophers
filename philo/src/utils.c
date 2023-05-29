@@ -6,7 +6,7 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 14:13:56 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/05/29 17:55:57 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/05/29 19:15:07 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	check_dead(t_philo *perso)
 		pthread_mutex_unlock(&perso->infos->write);
 		return (ERR);
 	}
-	else if ((get_time(perso->infos) - perso->last_meal) >= perso->infos->t_die)
+	else if ((get_time(perso->infos) - perso->last_meal) > perso->infos->t_die)
 	{
 		perso->infos->dead = 1;
 		perso->last_meal = running_time(perso->infos);
@@ -87,7 +87,7 @@ int	write_msg(t_philo *perso, char *msg)
 		pthread_mutex_unlock(&perso->infos->write);
 		return (ERR);
 	}
-	else if ((get_time(perso->infos) - perso->last_meal) >= perso->infos->t_die)
+	else if ((get_time(perso->infos) - perso->last_meal) > perso->infos->t_die)
 	{
 		perso->infos->dead = 1;
 		perso->last_meal = running_time(perso->infos);

@@ -6,7 +6,7 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 14:13:56 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/05/29 17:57:33 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/05/29 19:15:27 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	check_dead(t_philo *perso)
 		sem_post(perso->infos->check_dead);
 		return (ERR);
 	}
-	else if ((get_time(perso->infos) - perso->last_meal) >= perso->infos->t_die)
+	else if ((get_time(perso->infos) - perso->last_meal) > perso->infos->t_die)
 	{
 		sem_post(perso->infos->check_dead);
 		perso->last_meal = running_time(perso->infos);
