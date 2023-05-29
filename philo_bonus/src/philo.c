@@ -6,7 +6,7 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 14:09:18 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/05/29 19:00:07 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/05/29 19:48:49 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,8 @@ void	ft_launch(t_philo *perso)
 		if (perso->infos->ac == 6)
 			perso->nb_meal++;
 		if (!ft_sleep(perso))
+			break ;
+		if (perso->nb_meal >= perso->infos->nb_cycle)
 			break ;
 		if (!ft_think(perso))
 			break ;
