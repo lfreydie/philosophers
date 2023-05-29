@@ -6,7 +6,7 @@
 #    By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/07 15:01:41 by lfreydie          #+#    #+#              #
-#    Updated: 2023/05/29 13:44:58 by lfreydie         ###   ########.fr        #
+#    Updated: 2023/05/24 09:58:26 by lfreydie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,7 @@ END=\033[0m
 
 # ----------- Files ----------- #
 
-SRC_F =	philo.c	utils.c	init.c	exit.c	activities.c	time.c	thread.c
+SRC_F =	philo.c	utils.c	init.c	exit.c	activities.c	time.c
 SRC = $(addprefix $(SRC_DIR)/, $(SRC_F))
 OBJ = $(patsubst $(SRC_DIR)/%,$(OBJ_DIR)/%,$(SRC:.c=.o))
 

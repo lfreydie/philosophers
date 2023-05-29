@@ -6,11 +6,11 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 14:56:39 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/05/29 16:38:23 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/05/24 16:19:14 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/philo_bonus.h"
+#include "../include/philosophers.h"
 
 void	ft_exit(t_infos *infos, char *msg)
 {
@@ -23,29 +23,25 @@ void	ft_exit(t_infos *infos, char *msg)
 
 void	free_infos(t_infos *infos)
 {
+	int	i;
+
 	if (infos)
 	{
 		if (infos->tab_philo)
+		{
+			i = -1;
+			while (++i < infos->nb_philo)
+				pthread_join(infos->tab_philo[i].thread, NULL);
 			free(infos->tab_philo);
+		}
+		pthread_mutex_destroy(&infos->write);
+		if (infos->tab_fork)
+		{
+			i = -1;
+			while (++i < infos->nb_philo)
+				pthread_mutex_destroy(&infos->tab_fork[i]);
+			free(infos->tab_fork);
+		}
 		free(infos);
-	}
-}
-
-void	sem_end(t_infos *infos)
-{
-	if (infos->forks)
-	{
-		sem_close(infos->forks);
-		sem_unlink("/forks");
-	}
-	if (infos->write)
-	{
-		sem_close(infos->write);
-		sem_unlink("/write");
-	}
-	if (infos->check_dead)
-	{
-		sem_close(infos->check_dead);
-		sem_unlink("/check_dead");
 	}
 }

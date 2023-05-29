@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lefreydier <lefreydier@student.42.fr>      +#+  +:+       +#+        */
+/*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 14:09:18 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/05/27 15:47:46 by lefreydier       ###   ########.fr       */
+/*   Updated: 2023/05/29 16:30:41 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,8 @@ int	main(int ac, char **av)
 	t_infos	*infos;
 	int		status;
 	int		i;
-	// int		semval;
 
 	infos = ft_init(ac, av);
-	// sem_getvalue(infos->check_dead, &semval);
-	// printf("%d beginning\n", semval);
 	infos->t_start = get_time(infos);
 	if (infos->nb_philo == 1)
 		ft_one_philo(infos);
@@ -30,8 +27,6 @@ int	main(int ac, char **av)
 	i = -1;
 	while (++i < infos->nb_philo)
 		waitpid(infos->tab_philo[i].pid, &status, 0);
-	// sem_getvalue(infos->check_dead, &semval);
-	// printf("end ressources : %d\n", semval);
 	sem_end(infos);
 	free_infos(infos);
 	return (0);
@@ -65,15 +60,11 @@ void	fork_process(t_infos *infos)
 
 void	ft_launch(t_philo *perso)
 {
-	// int	semval;
-
-	sem_wait(perso->infos->check_dead);
-	// sem_getvalue(perso->infos->check_dead, &semval);
-	// printf("alive : %d , ressources : %d\n", perso->id, semval);
-	usleep(100);
 	pthread_create(&perso->thread, NULL, wait_to_die, perso);
-	if (perso->id % 2 == 0)
-		usleep(200);
+	if (perso->id % 2 && perso->infos->t_eat < perso->infos->t_die)
+		usleep(perso->infos->t_eat * 1000);
+	else if (perso->id % 2 && perso->infos->t_eat > perso->infos->t_die)
+		usleep(perso->infos->t_die * 1000);
 	while (perso->nb_meal < perso->infos->nb_cycle)
 	{
 		if (!ft_eat(perso))
@@ -89,7 +80,6 @@ void	ft_launch(t_philo *perso)
 	sem_close(perso->infos->forks);
 	sem_close(perso->infos->write);
 	sem_close(perso->infos->check_dead);
-
 }
 
 void	ft_one_philo(t_infos *infos)
@@ -102,18 +92,4 @@ void	ft_one_philo(t_infos *infos)
 	free_infos(infos);
 	sem_end(infos);
 	exit (0);
-}
-
-void	*wait_to_die(void *data)
-{
-	t_philo	*perso;
-	// int		semval;
-
-	perso = data;
-	sem_wait(perso->infos->check_dead);
-	// sem_getvalue(perso->infos->check_dead, &semval);
-	// printf("dead : %d , ressources : %d\n", perso->id, semval);
-	perso->infos->dead = 1;
-	sem_post(perso->infos->check_dead);
-	return (NULL);
 }

@@ -6,23 +6,49 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:06:12 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/05/29 16:30:21 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/05/24 09:51:49 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/philo_bonus.h"
+#include "../include/philosophers.h"
 
 int	take_forks(t_philo *perso)
 {
-	sem_wait(perso->infos->forks);
-	if (!write_msg(perso, "%d %d has taken a fork\n"))
-		return \
-		(sem_post(perso->infos->forks), ERR);
-	sem_wait(perso->infos->forks);
-	if (!write_msg(perso, "%d %d has taken a fork\n"))
-		return (sem_post(perso->infos->forks),
-			sem_post(perso->infos->forks), ERR);
+	if (!(perso->id % 2))
+	{
+		pthread_mutex_lock(&perso->infos->tab_fork[perso->l_fork]);
+		if (!write_msg(perso, "%d %d has taken a fork\n"))
+			return \
+			(pthread_mutex_unlock(&perso->infos->tab_fork[perso->l_fork]), ERR);
+		pthread_mutex_lock(&perso->infos->tab_fork[perso->r_fork]);
+		if (!write_msg(perso, "%d %d has taken a fork\n"))
+			return (drop_forks(perso), ERR);
+	}
+	else
+	{
+		pthread_mutex_lock(&perso->infos->tab_fork[perso->r_fork]);
+		if (!write_msg(perso, "%d %d has taken a fork\n"))
+			return \
+			(pthread_mutex_unlock(&perso->infos->tab_fork[perso->r_fork]), ERR);
+		pthread_mutex_lock(&perso->infos->tab_fork[perso->l_fork]);
+		if (!write_msg(perso, "%d %d has taken a fork\n"))
+			return (drop_forks(perso), ERR);
+	}
 	return (SUCCESS);
+}
+
+void	drop_forks(t_philo *perso)
+	{
+	if (!perso->id % 2)
+	{
+		pthread_mutex_unlock(&perso->infos->tab_fork[perso->r_fork]);
+		pthread_mutex_unlock(&perso->infos->tab_fork[perso->l_fork]);
+	}
+	else
+	{
+		pthread_mutex_unlock(&perso->infos->tab_fork[perso->l_fork]);
+		pthread_mutex_unlock(&perso->infos->tab_fork[perso->r_fork]);
+	}
 }
 
 int	ft_eat(t_philo *perso)
@@ -31,13 +57,10 @@ int	ft_eat(t_philo *perso)
 		return (ERR);
 	perso->last_meal = write_msg(perso, "%d %d is eating\n");
 	if (!perso->last_meal)
-		return (sem_post(perso->infos->forks),
-			sem_post(perso->infos->forks), ERR);
+		return (drop_forks(perso), ERR);
 	if (!ft_waiting(perso, perso->infos->t_eat))
-		return (sem_post(perso->infos->forks),
-			sem_post(perso->infos->forks), ERR);
-	sem_post(perso->infos->forks);
-	sem_post(perso->infos->forks);
+		return (drop_forks(perso), ERR);
+	drop_forks(perso);
 	return (SUCCESS);
 }
 

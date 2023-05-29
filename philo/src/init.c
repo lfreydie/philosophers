@@ -6,11 +6,11 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 11:06:39 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/05/29 16:40:43 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/05/22 15:13:32 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/philo_bonus.h"
+#include "../include/philosophers.h"
 
 t_infos	*ft_init(int ac, char **av)
 {
@@ -22,32 +22,12 @@ t_infos	*ft_init(int ac, char **av)
 	if (!infos)
 		ft_exit(NULL, ERR_ARG);
 	memset(infos, 0, sizeof(*infos));
+	pthread_mutex_init(&infos->write, NULL);
+	pthread_mutex_init(&infos->check_dead, NULL);
 	get_infos(infos, ac, av);
-	if (!infos->write)
-		printf("hello\n");
-	infos->write = ft_sem_open("/write", 1);
-	infos->check_dead = ft_sem_open("/check_dead", infos->nb_philo);
-	infos->forks = ft_sem_open("/forks", infos->nb_philo);
-	if (!infos->write || !infos->check_dead || !infos->forks)
-	{
-		sem_end(infos);
-		ft_exit(infos, ERR_SEM);
-	}
+	fork_set(infos);
 	philo_set(infos);
 	return (infos);
-}
-
-sem_t	*ft_sem_open(const char *name, unsigned int value)
-{
-	sem_t	*sem;
-
-	sem = sem_open(name, O_CREAT | O_EXCL, 0644, value);
-	if (sem == SEM_FAILED)
-	{
-		sem_unlink(name);
-		sem = sem_open(name, O_CREAT, 0644, value);
-	}
-	return (sem);
 }
 
 void	get_infos(t_infos *infos, int ac, char **av)
@@ -70,6 +50,18 @@ void	get_infos(t_infos *infos, int ac, char **av)
 		infos->nb_cycle = 1;
 }
 
+void	fork_set(t_infos *infos)
+{
+	int	i;
+
+	infos->tab_fork = malloc(sizeof(pthread_mutex_t) * (infos->nb_philo));
+	if (!infos->tab_fork)
+		ft_exit(infos, ERR_MAL);
+	i = -1;
+	while (++i < infos->nb_philo)
+		pthread_mutex_init(&infos->tab_fork[i], NULL);
+}
+
 void	philo_set(t_infos *infos)
 {
 	int	i;
@@ -82,6 +74,11 @@ void	philo_set(t_infos *infos)
 	while (++i < infos->nb_philo)
 	{
 		infos->tab_philo[i].id = i + 1;
+		infos->tab_philo[i].r_fork = i;
+		if (i == 0)
+			infos->tab_philo[i].l_fork = infos->nb_philo - 1;
+		else
+			infos->tab_philo[i].l_fork = i - 1;
 		infos->tab_philo[i].infos = infos;
 	}
 }
