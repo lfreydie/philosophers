@@ -6,14 +6,14 @@
 #    By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/07 15:01:41 by lfreydie          #+#    #+#              #
-#    Updated: 2023/05/29 13:44:58 by lfreydie         ###   ########.fr        #
+#    Updated: 2023/05/29 17:52:46 by lfreydie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # ---------- Project ---------- #
 
 CC ?= gcc
-NAME := philo
+NAME := philo_bonus
 CFLAGS += -Wall -Wextra -Werror -pthread -g
 
 # -------- Directories -------- #

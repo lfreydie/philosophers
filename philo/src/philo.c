@@ -6,7 +6,7 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 14:09:18 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/05/24 15:02:00 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/05/29 19:06:30 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	main(int ac, char **av)
 
 	infos = ft_init(ac, av);
 	i = -1;
-	infos->t_start = get_time(infos);
+	infos->t_start = get_time(infos) + 2000;
 	if (infos->nb_philo == 1)
 	{
 		infos->tab_philo[0].last_meal = infos->t_start;
@@ -45,8 +45,13 @@ void	*ft_launch(void *data)
 	t_philo	*perso;
 
 	perso = (t_philo *)data;
-	if (perso->id % 2 == 0)
+	while (get_time(perso->infos) < perso->infos->t_start)
 		usleep(200);
+	if (!(perso->id % 2))
+	{
+		if (!ft_pre_think(perso))
+			return (NULL);
+	}
 	while (perso->nb_meal < perso->infos->nb_cycle)
 	{
 		if (!ft_eat(perso))
@@ -54,6 +59,8 @@ void	*ft_launch(void *data)
 		if (perso->infos->ac == 6)
 			perso->nb_meal++;
 		if (!ft_sleep(perso))
+			break ;
+		if (perso->nb_meal >= perso->infos->nb_cycle)
 			break ;
 		if (!ft_think(perso))
 			break ;

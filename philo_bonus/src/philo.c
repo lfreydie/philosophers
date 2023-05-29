@@ -6,7 +6,7 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 14:09:18 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/05/29 16:30:41 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/05/29 19:00:07 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	main(int ac, char **av)
 	int		i;
 
 	infos = ft_init(ac, av);
-	infos->t_start = get_time(infos);
+	infos->t_start = get_time(infos) + 2000;
 	if (infos->nb_philo == 1)
 		ft_one_philo(infos);
 	else
@@ -60,11 +60,17 @@ void	fork_process(t_infos *infos)
 
 void	ft_launch(t_philo *perso)
 {
+	while (get_time(perso->infos) < perso->infos->t_start)
+		usleep(200);
 	pthread_create(&perso->thread, NULL, wait_to_die, perso);
-	if (perso->id % 2 && perso->infos->t_eat < perso->infos->t_die)
-		usleep(perso->infos->t_eat * 1000);
-	else if (perso->id % 2 && perso->infos->t_eat > perso->infos->t_die)
-		usleep(perso->infos->t_die * 1000);
+	if (!(perso->id % 2))
+	{
+		if (!ft_pre_think(perso))
+		{
+			(pthread_join(perso->thread, NULL), ft_sem_close(perso->infos));
+			return ;
+		}
+	}
 	while (perso->nb_meal < perso->infos->nb_cycle)
 	{
 		if (!ft_eat(perso))
@@ -76,10 +82,7 @@ void	ft_launch(t_philo *perso)
 		if (!ft_think(perso))
 			break ;
 	}
-	pthread_join(perso->thread, NULL);
-	sem_close(perso->infos->forks);
-	sem_close(perso->infos->write);
-	sem_close(perso->infos->check_dead);
+	(pthread_join(perso->thread, NULL), ft_sem_close(perso->infos));
 }
 
 void	ft_one_philo(t_infos *infos)

@@ -6,7 +6,7 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 11:06:39 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/05/22 15:13:32 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/05/29 17:53:32 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	get_infos(t_infos *infos, int ac, char **av)
 	infos->t_eat = ft_atoi(av[3]);
 	infos->t_sleep = ft_atoi(av[4]);
 	infos->ac = ac;
-	if (infos->nb_philo < 1 || infos->t_die < 0 || \
+	if (infos->nb_philo < 0 || infos->t_die < 0 || \
 	infos->t_eat < 0 || infos->t_sleep < 0)
 		ft_exit(infos, ERR_ARG);
 	if (ac == 6)

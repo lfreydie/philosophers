@@ -6,7 +6,7 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 10:34:18 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/05/29 15:41:10 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/05/29 19:00:25 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ void	*wait_to_end(void *data);
 int		take_forks(t_philo *perso);
 int		ft_eat(t_philo *perso);
 int		ft_think(t_philo *perso);
+int		ft_pre_think(t_philo *perso);
 int		ft_sleep(t_philo *perso);
 
 //	TIME
@@ -95,5 +96,6 @@ int		write_msg(t_philo *perso, char *msg);
 void	ft_exit(t_infos *infos, char *msg);
 void	free_infos(t_infos *infos);
 void	sem_end(t_infos *infos);
+void	ft_sem_close(t_infos *infos);
 
 #endif

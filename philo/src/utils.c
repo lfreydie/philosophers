@@ -6,7 +6,7 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 14:13:56 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/05/24 17:33:04 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/05/29 17:55:57 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ int	ft_atoi(const char *nptr)
 		res = res * 10 + nptr[i] - 48;
 		i++;
 	}
+	if (nptr[i] != '\0')
+		return (-1);
 	return (sign * res);
 }
 

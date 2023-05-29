@@ -6,7 +6,7 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 14:56:39 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/05/29 16:38:23 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/05/29 18:38:57 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,14 @@ void	sem_end(t_infos *infos)
 		sem_close(infos->check_dead);
 		sem_unlink("/check_dead");
 	}
+}
+
+void	ft_sem_close(t_infos *infos)
+{
+	if (infos->forks)
+		sem_close(infos->forks);
+	if (infos->write)
+		sem_close(infos->write);
+	if (infos->check_dead)
+		sem_close(infos->check_dead);
 }

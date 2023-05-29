@@ -6,7 +6,7 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 11:06:39 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/05/29 16:40:43 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/05/29 18:42:47 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@ t_infos	*ft_init(int ac, char **av)
 		ft_exit(NULL, ERR_ARG);
 	memset(infos, 0, sizeof(*infos));
 	get_infos(infos, ac, av);
-	if (!infos->write)
-		printf("hello\n");
 	infos->write = ft_sem_open("/write", 1);
 	infos->check_dead = ft_sem_open("/check_dead", infos->nb_philo);
 	infos->forks = ft_sem_open("/forks", infos->nb_philo);
@@ -57,7 +55,7 @@ void	get_infos(t_infos *infos, int ac, char **av)
 	infos->t_eat = ft_atoi(av[3]);
 	infos->t_sleep = ft_atoi(av[4]);
 	infos->ac = ac;
-	if (infos->nb_philo < 1 || infos->t_die < 0 || \
+	if (infos->nb_philo < 0 || infos->t_die < 0 || \
 	infos->t_eat < 0 || infos->t_sleep < 0)
 		ft_exit(infos, ERR_ARG);
 	if (ac == 6)

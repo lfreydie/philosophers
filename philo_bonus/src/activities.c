@@ -6,7 +6,7 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 13:06:12 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/05/29 16:30:21 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/05/29 19:01:42 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,24 @@ int	ft_think(t_philo *perso)
 {
 	int	t_think;
 
-	t_think = (perso->infos->t_die - \
-	(perso->infos->t_eat + perso->infos->t_sleep)) / 2;
+	if (perso->infos->t_eat > perso->infos->t_sleep)
+		t_think = (perso->infos->t_die - \
+		(perso->infos->t_eat + perso->infos->t_sleep)) / 2;
+	else
+		t_think = 0;
+	if (!write_msg(perso, "%d %d is thinking\n"))
+		return (ERR);
+	if (perso->infos->t_die >= 2 * perso->infos->t_eat)
+		return (ft_waiting(perso, t_think));
+	else
+		return (ft_waiting(perso, perso->infos->t_die));
+}
+
+int	ft_pre_think(t_philo *perso)
+{
+	int	t_think;
+
+	t_think = perso->infos->t_eat / 2;
 	if (!write_msg(perso, "%d %d is thinking\n"))
 		return (ERR);
 	if (perso->infos->t_die >= 2 * perso->infos->t_eat)
