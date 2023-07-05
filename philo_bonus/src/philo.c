@@ -6,7 +6,7 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 14:09:18 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/05/29 19:48:49 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/06/13 13:11:28 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ void	fork_process(t_infos *infos)
 {
 	int		i;
 
+	while (get_time(infos) < infos->t_start)
+		usleep(200);
 	i = -1;
 	while (++i < infos->nb_philo)
 		sem_wait(infos->check_dead);
@@ -56,12 +58,15 @@ void	fork_process(t_infos *infos)
 	i = -1;
 	while (++i < infos->nb_philo)
 		sem_post(infos->check_dead);
+	// i = -1;
+	// while (++i < infos->nb_philo)
+	// 	sem_post(infos->start);
 }
 
 void	ft_launch(t_philo *perso)
 {
-	while (get_time(perso->infos) < perso->infos->t_start)
-		usleep(200);
+	// sem_wait(perso->infos->start);
+	// sem_post(perso->infos->start);
 	pthread_create(&perso->thread, NULL, wait_to_die, perso);
 	if (!(perso->id % 2))
 	{

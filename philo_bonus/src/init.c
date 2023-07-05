@@ -6,7 +6,7 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 11:06:39 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/05/29 18:42:47 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/06/13 13:06:57 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ t_infos	*ft_init(int ac, char **av)
 	get_infos(infos, ac, av);
 	infos->write = ft_sem_open("/write", 1);
 	infos->check_dead = ft_sem_open("/check_dead", infos->nb_philo);
+	// infos->start = ft_sem_open("/start", 0);
 	infos->forks = ft_sem_open("/forks", infos->nb_philo);
 	if (!infos->write || !infos->check_dead || !infos->forks)
 	{
