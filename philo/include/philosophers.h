@@ -6,7 +6,7 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 13:22:50 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/05/29 19:06:04 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/09/18 15:08:53 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,75 +17,99 @@
 # include <string.h>
 # include <stdio.h>
 # include <stdlib.h>
+# include <stdbool.h>
 # include <unistd.h>
 # include <sys/time.h>
 # include <pthread.h>
 
+typedef struct s_time
+{
+	int	start;
+	int	die;
+	int	eat;
+	int	sleep;
+	int	think;
+}	t_time;
+
 typedef struct s_philo
 {
-	pthread_t		thread;
+	pthread_t		th_philo;
 	int				id;
 	int				r_fork;
 	int				l_fork;
 	int				last_meal;
 	int				nb_meal;
-	struct s_infos	*infos;
+	struct s_infos	*gen;
 }	t_philo;
 
 typedef struct s_infos
 {
 	t_philo			*tab_philo;
-	pthread_mutex_t	*tab_fork;
-	pthread_mutex_t	write;
-	pthread_mutex_t	check_dead;
-	int				dead;
-	int				ac;
 	int				nb_philo;
-	int				t_start;
-	int				t_die;
-	int				t_eat;
-	int				t_sleep;
+	bool			dead;
+	t_time			time;
+	bool			cycle;
 	int				nb_cycle;
+	pthread_mutex_t	*fork;
+	pthread_mutex_t	lock_write;
+	pthread_mutex_t	lock_dead;
 }	t_infos;
 
-# define ERR_ARG "arguments invalid\n"
-# define ERR_MAL "erreur malloc\n"
-# define ERR 0
-# define SUCCESS 1
+# define SUCCESS	0
+# define FAILURE	1
+# define FAILED		"Failed"
+# define HELP		"--help"
+# define ARG_ERR	"Invalid argument"
+# define ARGN_ERR	"Invalid number of arguments"
+# define MALLOC_ERR	"Malloc failed"
+# define THREAD_ERR	"pthread_create failed"
+
+# define LOG_FORK	"has taken a fork\n"
+# define LOG_EAT	"is eating\n"
+# define LOG_SLEEP	"is sleeping\n"
+# define LOG_THINK	"is thinking\n"
+# define LOG_DEAD	"died\n"
 
 //	INIT
 t_infos	*ft_init(int ac, char **av);
-void	get_infos(t_infos *infos, int ac, char **av);
-void	fork_set(t_infos *infos);
-void	philo_set(t_infos *infos);
-
-//	PHILO
-void	*ft_launch(void *data);
-void	*ft_one_philo(void *data);
-
-//	FORKS
-int		take_forks(t_philo *perso);
-void	drop_forks(t_philo *perso);
-
-//	ACTIVITIES
-int		ft_eat(t_philo *perso);
-int		ft_think(t_philo *perso);
-int		ft_pre_think(t_philo *perso);
-int		ft_sleep(t_philo *perso);
-
-//	TIME
-int		get_time(t_infos *infos);
-int		running_time(t_infos *infos);
-int		ft_waiting(t_philo *perso, int time);
-
-//	UTILS
-int		ft_atoi(const char *nptr);
-int		ft_strlen(const char *s);
-int		check_dead(t_philo *perso);
-int		write_msg(t_philo *perso, char *msg);
+void	get_infos(t_infos *gen, int ac, char **av);
+void	fork_set(t_infos *gen);
+void	philo_set(t_infos *gen);
 
 //	EXIT
-void	ft_exit(t_infos *infos, char *msg);
-void	free_infos(t_infos *infos);
+void	ft_exit(t_infos *gen, char *msg);
+void	free_data(t_infos *gen);
+
+//	PHILO_LIFE
+//		ACTIVITIES
+int		ft_eat(t_philo *philo);
+int		ft_think(t_philo *philo);
+int		ft_time_lag(t_philo *philo);
+int		ft_sleep(t_philo *philo);
+//		DEAD
+int		check_dead(t_philo *philo);
+//		FORKS
+int		take_forks(t_philo *philo);
+void	drop_forks(t_philo *philo);
+//		PHILO
+void	*philo_life(void *data);
+void	one_philo(t_infos *gen);
+
+//	PRINT
+//		PRINT_HELPER
+void	print_helper(void);
+//		PRINT_STATUS
+void	print_status(t_philo *philo, char *msg);
+
+//	UTILS
+//		FT_LIB
+int		ft_atoi(const char *nptr);
+int		ft_strlen(const char *s);
+int		ft_memcmp(const void *s1, const void *s2, size_t n);
+//	TIME
+int		get_time(void);
+int		run_time(t_infos *gen);
+int		ft_wait(t_philo *philo, int time);
+
 
 #endif

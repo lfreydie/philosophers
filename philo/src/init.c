@@ -6,79 +6,84 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 11:06:39 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/05/29 17:53:32 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/09/18 16:57:57 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/philosophers.h"
+#include "philosophers.h"
 
 t_infos	*ft_init(int ac, char **av)
 {
 	t_infos	*infos;
 
 	if (ac != 5 && ac != 6)
-		ft_exit(NULL, ERR_ARG);
+		ft_exit(NULL, ARGN_ERR);
 	infos = malloc(sizeof(*infos));
 	if (!infos)
-		ft_exit(NULL, ERR_ARG);
+		ft_exit(NULL, MALLOC_ERR);
 	memset(infos, 0, sizeof(*infos));
-	pthread_mutex_init(&infos->write, NULL);
-	pthread_mutex_init(&infos->check_dead, NULL);
+	pthread_mutex_init(&infos->lock_write, NULL);
+	pthread_mutex_init(&infos->lock_dead, NULL);
 	get_infos(infos, ac, av);
 	fork_set(infos);
 	philo_set(infos);
 	return (infos);
 }
 
-void	get_infos(t_infos *infos, int ac, char **av)
+void	get_infos(t_infos *gen, int ac, char **av)
 {
-	infos->nb_philo = ft_atoi(av[1]);
-	infos->t_die = ft_atoi(av[2]);
-	infos->t_eat = ft_atoi(av[3]);
-	infos->t_sleep = ft_atoi(av[4]);
-	infos->ac = ac;
-	if (infos->nb_philo < 0 || infos->t_die < 0 || \
-	infos->t_eat < 0 || infos->t_sleep < 0)
-		ft_exit(infos, ERR_ARG);
+	gen->nb_philo = ft_atoi(av[1]);
+	gen->time.die = ft_atoi(av[2]);
+	gen->time.eat = ft_atoi(av[3]);
+	gen->time.sleep = ft_atoi(av[4]);
+	if (gen->nb_philo < 0 || gen->time.die < 0 || \
+	gen->time.eat < 0 || gen->time.sleep < 0)
+		ft_exit(gen, ARG_ERR);
+	if (gen->time.die < gen->time.eat * (2 + (gen->nb_philo % 2)))
+		gen->time.think = (1 + (gen->nb_philo % 2)) \
+		* gen->time.eat - gen->time.sleep;
+	if (gen->time.think < 0)
+		gen->time.think = 0;
 	if (ac == 6)
 	{
-		infos->nb_cycle = ft_atoi(av[5]);
-		if (infos->nb_cycle < 0)
-			ft_exit(infos, ERR_ARG);
+		gen->cycle = true;
+		gen->nb_cycle = ft_atoi(av[5]);
+		if (gen->nb_cycle < 0)
+			ft_exit(gen, ARG_ERR);
 	}
 	else
-		infos->nb_cycle = 1;
+		gen->nb_cycle = 1;
 }
 
-void	fork_set(t_infos *infos)
+void	fork_set(t_infos *gen)
 {
 	int	i;
 
-	infos->tab_fork = malloc(sizeof(pthread_mutex_t) * (infos->nb_philo));
-	if (!infos->tab_fork)
-		ft_exit(infos, ERR_MAL);
+	gen->fork = malloc(sizeof(pthread_mutex_t) * (gen->nb_philo));
+	if (!gen->fork)
+		ft_exit(gen, MALLOC_ERR);
 	i = -1;
-	while (++i < infos->nb_philo)
-		pthread_mutex_init(&infos->tab_fork[i], NULL);
+	while (++i < gen->nb_philo)
+		pthread_mutex_init(&gen->fork[i], NULL);
 }
 
-void	philo_set(t_infos *infos)
+void	philo_set(t_infos *gen)
 {
 	int	i;
 
-	infos->tab_philo = malloc(sizeof(t_philo) * infos->nb_philo);
-	if (!infos->tab_philo)
-		ft_exit(infos, ERR_MAL);
-	memset(infos->tab_philo, 0, sizeof(t_philo) * infos->nb_philo);
+	gen->tab_philo = malloc(sizeof(t_philo) * gen->nb_philo);
+	if (!gen->tab_philo)
+		ft_exit(gen, MALLOC_ERR);
+	memset(gen->tab_philo, 0, sizeof(t_philo) * gen->nb_philo);
 	i = -1;
-	while (++i < infos->nb_philo)
+	while (++i < gen->nb_philo)
 	{
-		infos->tab_philo[i].id = i + 1;
-		infos->tab_philo[i].r_fork = i;
+		gen->tab_philo[i].id = i + 1;
+		gen->tab_philo[i].r_fork = i;
 		if (i == 0)
-			infos->tab_philo[i].l_fork = infos->nb_philo - 1;
+			gen->tab_philo[i].l_fork = gen->nb_philo - 1;
 		else
-			infos->tab_philo[i].l_fork = i - 1;
-		infos->tab_philo[i].infos = infos;
+			gen->tab_philo[i].l_fork = i - 1;
+		gen->tab_philo[i].gen = gen;
 	}
 }
