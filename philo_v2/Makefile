@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+         #
+#    By: lefreydier <lefreydier@student.42.fr>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/07 15:01:41 by lfreydie          #+#    #+#              #
-#    Updated: 2023/05/29 19:06:46 by lfreydie         ###   ########.fr        #
+#    Updated: 2023/09/09 13:09:25 by lefreydier       ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,9 @@ END=\033[0m
 
 # ----------- Files ----------- #
 
-SRC_F =	philo.c	utils.c	init.c	exit.c	activities.c	time.c	forks.c
+SRC_F =	main.c	init.c	exit.c \
+		print/print_helper.c \
+		utils/ft_atoi.c	utils/ft_memcmp.c	utils/ft_strlen.c	utils/time.c
 SRC = $(addprefix $(SRC_DIR)/, $(SRC_F))
 OBJ = $(patsubst $(SRC_DIR)/%,$(OBJ_DIR)/%,$(SRC:.c=.o))
 

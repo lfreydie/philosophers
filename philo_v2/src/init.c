@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lefreydier <lefreydier@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 11:06:39 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/07/06 15:23:47 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/09/09 12:33:44 by lefreydier       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ void	philo_set(t_data *gen)
 	i = -1;
 	while (++i < gen->nb_philo)
 	{
+		pthread_mutex_init(&gen->tab_philo[i].lock_philo, NULL);
 		gen->tab_philo[i].id = i + 1;
 		gen->tab_philo[i].r_fork = i;
 		if (i == 0)

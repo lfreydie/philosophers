@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lefreydier <lefreydier@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 13:22:50 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/07/06 15:19:14 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/09/10 16:56:47 by lefreydier       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ typedef struct s_philo
 	int				l_fork;
 	int				last_meal;
 	int				nb_meal;
-	t_data			*gen;
+	struct s_data	*gen;
 }	t_philo;
 
 typedef struct s_data
@@ -73,18 +73,47 @@ typedef struct s_data
 # define LOG_THINK	"is thinking\n"
 # define LOG_DEAD	"died\n"
 
-//	MONITOR
+//	MAIN
+void	philo_process(void *data);
+void	ft_one_dude(t_data *gen);
 
 //	PHILO_LIFE
+//		DEAD
+void	monitoring_process(void *data);
+int		check_stop(t_philo *philo);
+//		WAIT
+int		ft_wait(t_philo *philo, int time);
+int		ft_think(t_philo *philo, int time);
+int		ft_sleep(t_philo *philo, int time);
+//		AGENDA
+void	philo_life(t_philo *philo);
+//		EAT
 
-//	PHILO_OUT
+//	EXIT
+void	ft_exit(t_data *gen, char *msg);
+void	free_data(t_data *gen);
+
+//	INIT
+t_data	*ft_init(int ac, char **av);
+void	set_data(t_data *gen, int ac, char **av);
+void	fork_set(t_data *gen);
+void	philo_set(t_data *gen);
 
 //	PRINT
 //		PRINT_HELPER
 void	print_helper(void);
+//		PRINT_STATUS
+void	print_status(int time, t_philo *philo, char *msg);
 
 //	UTILS
 //		FT_MEMCMP
 int		ft_memcmp(const void *s1, const void *s2, size_t n);
+//		FT_ATOI
+int		ft_atoi(const char *nptr);
+//		FT_STRLEN
+int		ft_strlen(const char *s);
+//		TIME
+int		get_time(t_data *gen);
+int		run_time(t_data *gen);
 
 #endif
