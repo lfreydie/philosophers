@@ -6,7 +6,7 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 11:06:39 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/09/18 16:57:57 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/09/19 15:25:45 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ t_infos	*ft_init(int ac, char **av)
 
 void	get_infos(t_infos *gen, int ac, char **av)
 {
+	int	t_max;
+
 	gen->nb_philo = ft_atoi(av[1]);
 	gen->time.die = ft_atoi(av[2]);
 	gen->time.eat = ft_atoi(av[3]);
@@ -39,11 +41,11 @@ void	get_infos(t_infos *gen, int ac, char **av)
 	if (gen->nb_philo < 0 || gen->time.die < 0 || \
 	gen->time.eat < 0 || gen->time.sleep < 0)
 		ft_exit(gen, ARG_ERR);
-	if (gen->time.die < gen->time.eat * (2 + (gen->nb_philo % 2)))
-		gen->time.think = (1 + (gen->nb_philo % 2)) \
-		* gen->time.eat - gen->time.sleep;
-	if (gen->time.think < 0)
-		gen->time.think = 0;
+	t_max = gen->time.sleep + (gen->time.eat - gen->time.sleep);
+	if (!(gen->nb_philo % 2) || gen->time.die >= 3 * t_max)
+		gen->time.think = gen->time.eat - gen->time.sleep + 5;
+	else
+		gen->time.think = gen->time.die;
 	if (ac == 6)
 	{
 		gen->cycle = true;
@@ -79,11 +81,16 @@ void	philo_set(t_infos *gen)
 	while (++i < gen->nb_philo)
 	{
 		gen->tab_philo[i].id = i + 1;
-		gen->tab_philo[i].r_fork = i;
 		if (i == 0)
+		{
 			gen->tab_philo[i].l_fork = gen->nb_philo - 1;
+			gen->tab_philo[i].r_fork = i;
+		}
 		else
-			gen->tab_philo[i].l_fork = i - 1;
+		{
+			gen->tab_philo[i].l_fork = i;
+			gen->tab_philo[i].r_fork = i - 1;
+		}
 		gen->tab_philo[i].gen = gen;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 14:39:14 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/09/18 15:46:51 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/09/19 18:32:29 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,12 @@ int	ft_wait(t_philo *philo, int time)
 {
 	int	start;
 
-	if (time == 0)
-		return (SUCCESS);
 	start = get_time();
 	while ((get_time() - start) < time)
 	{
-		usleep(500);
-		if (check_dead(philo))
-			return (FAILURE);
+		usleep(700);
+		if (get_time() - philo->last_meal >= philo->gen->time.die)
+			return (philo_death(philo));
 	}
 	return (SUCCESS);
 }

@@ -6,7 +6,7 @@
 #    By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/07 15:01:41 by lfreydie          #+#    #+#              #
-#    Updated: 2023/09/18 15:02:04 by lfreydie         ###   ########.fr        #
+#    Updated: 2023/09/19 18:44:07 by lfreydie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@
 
 CC ?= gcc
 NAME := philo
-CFLAGS += -Wall -Wextra -Werror -pthread -g
+CFLAGS += -Wall -Wextra -Werror -pthread
 
 # -------- Directories -------- #
 

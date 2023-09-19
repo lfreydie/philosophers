@@ -6,7 +6,7 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 13:22:50 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/09/18 15:08:53 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/09/19 18:37:02 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,9 @@ int		ft_think(t_philo *philo);
 int		ft_time_lag(t_philo *philo);
 int		ft_sleep(t_philo *philo);
 //		DEAD
-int		check_dead(t_philo *philo);
+int		check_all(t_infos *gen);
+int		check_philo(t_philo *philo);
+int		philo_death(t_philo *philo);
 //		FORKS
 int		take_forks(t_philo *philo);
 void	drop_forks(t_philo *philo);
@@ -99,7 +101,7 @@ void	one_philo(t_infos *gen);
 //		PRINT_HELPER
 void	print_helper(void);
 //		PRINT_STATUS
-void	print_status(t_philo *philo, char *msg);
+int		print_status(t_philo *philo, char *msg);
 
 //	UTILS
 //		FT_LIB
@@ -110,6 +112,5 @@ int		ft_memcmp(const void *s1, const void *s2, size_t n);
 int		get_time(void);
 int		run_time(t_infos *gen);
 int		ft_wait(t_philo *philo, int time);
-
 
 #endif

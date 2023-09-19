@@ -6,7 +6,7 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 14:09:18 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/09/18 15:40:57 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/09/19 10:37:51 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ void	*philo_life(void *data)
 
 void	one_philo(t_infos *gen)
 {
+	while (get_time() < gen->time.start)
+		usleep(200);
 	printf("%d 1 %s", run_time(gen), LOG_FORK);
 	usleep(gen->time.die * 1000);
 	printf("%d 1 %s", run_time(gen), LOG_DEAD);
