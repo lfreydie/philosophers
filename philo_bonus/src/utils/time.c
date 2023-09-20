@@ -3,41 +3,41 @@
 /*                                                        :::      ::::::::   */
 /*   time.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lefreydier <lefreydier@student.42.fr>      +#+  +:+       +#+        */
+/*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/11 14:39:14 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/05/27 15:46:25 by lefreydier       ###   ########.fr       */
+/*   Updated: 2023/09/20 17:46:36 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philo_bonus.h"
 
-int	get_time(t_infos *infos)
+int	get_time(void)
 {
 	struct timeval	time;
 	int				ms;
 
 	if (gettimeofday(&time, NULL) == -1)
-		ft_exit(infos, "didn't get time");
+		return (-1);
 	ms = time.tv_sec * 1000 + time.tv_usec / 1000;
 	return (ms);
 }
 
-int	running_time(t_infos *infos)
+int	run_time(t_infos *gen)
 {
-	return ((get_time(infos) - infos->t_start));
+	int	time;
+
+	time = get_time();
+	if (time == -1)
+		return (time);
+	return ((time - gen->time.start));
 }
 
-int	ft_waiting(t_philo *perso, int time)
+void	ft_wait(int time)
 {
 	int	start;
 
-	start = get_time(perso->infos);
-	while ((get_time(perso->infos) - start) < time)
-	{
+	start = get_time();
+	while ((get_time() - start) < time)
 		usleep(500);
-		if (!write_msg(perso, NULL))
-			return (ERR);
-	}
-	return (SUCCESS);
 }

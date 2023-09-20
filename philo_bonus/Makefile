@@ -6,7 +6,7 @@
 #    By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/07 15:01:41 by lfreydie          #+#    #+#              #
-#    Updated: 2023/05/29 17:52:46 by lfreydie         ###   ########.fr        #
+#    Updated: 2023/09/20 18:34:29 by lfreydie         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,7 +37,10 @@ END=\033[0m
 
 # ----------- Files ----------- #
 
-SRC_F =	philo.c	utils.c	init.c	exit.c	activities.c	time.c	thread.c
+SRC_F =	main.c init.c	exit.c \
+		philo_life/eat.c	philo_life/thread.c	philo_life/philo.c	philo_life/dead.c \
+		print/print_helper.c	print/print_status.c \
+		utils/ft_lib.c	utils/time.c
 SRC = $(addprefix $(SRC_DIR)/, $(SRC_F))
 OBJ = $(patsubst $(SRC_DIR)/%,$(OBJ_DIR)/%,$(SRC:.c=.o))
 

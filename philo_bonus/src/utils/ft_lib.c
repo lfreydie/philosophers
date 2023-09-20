@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   ft_lib.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 14:13:56 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/05/29 19:15:27 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/09/20 18:35:36 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,40 +51,17 @@ int	ft_strlen(const char *s)
 	return (i);
 }
 
-int	check_dead(t_philo *perso)
+int	ft_memcmp(const void *s1, const void *s2, size_t n)
 {
-	if (perso->infos->dead == 1)
+	size_t		i;
+
+	i = 0;
+	while (i < n)
 	{
-		sem_post(perso->infos->check_dead);
-		return (ERR);
+		if (((unsigned char *)s1)[i] != ((unsigned char *)s2)[i])
+			return (((unsigned char *)s1)[i] - ((unsigned char *)s2)[i]);
+		i++;
 	}
-	else if ((get_time(perso->infos) - perso->last_meal) > perso->infos->t_die)
-	{
-		sem_post(perso->infos->check_dead);
-		perso->last_meal = running_time(perso->infos);
-		printf("%d %d died\n", running_time(perso->infos), perso->id);
-		usleep(perso->infos->t_die * 1000);
-		return (ERR);
-	}
-	return (SUCCESS);
+	return (0);
 }
 
-int	write_msg(t_philo *perso, char *msg)
-{
-	int	time;
-
-	time = 1;
-	sem_wait(perso->infos->write);
-	if (!check_dead(perso))
-	{
-		sem_post(perso->infos->write);
-		return (ERR);
-	}
-	if (msg)
-	{
-		time = get_time(perso->infos);
-		printf(msg, time - perso->infos->t_start, perso->id);
-	}
-	sem_post(perso->infos->write);
-	return (time);
-}

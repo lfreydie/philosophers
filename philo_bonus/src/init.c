@@ -6,7 +6,7 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 11:06:39 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/06/13 13:06:57 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/09/20 18:04:24 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,28 @@
 
 t_infos	*ft_init(int ac, char **av)
 {
-	t_infos	*infos;
+	t_infos	*gen;
 
 	if (ac != 5 && ac != 6)
-		ft_exit(NULL, ERR_ARG);
-	infos = malloc(sizeof(*infos));
-	if (!infos)
-		ft_exit(NULL, ERR_ARG);
-	memset(infos, 0, sizeof(*infos));
-	get_infos(infos, ac, av);
-	infos->write = ft_sem_open("/write", 1);
-	infos->check_dead = ft_sem_open("/check_dead", infos->nb_philo);
-	// infos->start = ft_sem_open("/start", 0);
-	infos->forks = ft_sem_open("/forks", infos->nb_philo);
-	if (!infos->write || !infos->check_dead || !infos->forks)
+		ft_exit(NULL, ARG_ERR);
+	gen = malloc(sizeof(*gen));
+	if (!gen)
+		ft_exit(NULL, ARG_ERR);
+	memset(gen, 0, sizeof(*gen));
+	get_infos(gen, ac, av);
+	gen->lock_write = ft_sem_open("/lock_write", 1);
+	gen->death = ft_sem_open("/death", 0);
+	gen->check = ft_sem_open("/check", 1);
+	gen->meal = ft_sem_open("/meal", 1);
+	gen->forks = ft_sem_open("/forks", gen->nb_philo);
+	if (!gen->lock_write || !gen->death || !gen->forks \
+		|| !gen->check || !gen->meal)
 	{
-		sem_end(infos);
-		ft_exit(infos, ERR_SEM);
+		sem_end(gen);
+		ft_exit(gen, ERR_SEM);
 	}
-	philo_set(infos);
-	return (infos);
+	philo_set(gen);
+	return (gen);
 }
 
 sem_t	*ft_sem_open(const char *name, unsigned int value)
@@ -49,38 +51,38 @@ sem_t	*ft_sem_open(const char *name, unsigned int value)
 	return (sem);
 }
 
-void	get_infos(t_infos *infos, int ac, char **av)
+void	get_infos(t_infos *gen, int ac, char **av)
 {
-	infos->nb_philo = ft_atoi(av[1]);
-	infos->t_die = ft_atoi(av[2]);
-	infos->t_eat = ft_atoi(av[3]);
-	infos->t_sleep = ft_atoi(av[4]);
-	infos->ac = ac;
-	if (infos->nb_philo < 0 || infos->t_die < 0 || \
-	infos->t_eat < 0 || infos->t_sleep < 0)
-		ft_exit(infos, ERR_ARG);
+	gen->nb_philo = ft_atoi(av[1]);
+	gen->time.die = ft_atoi(av[2]);
+	gen->time.eat = ft_atoi(av[3]);
+	gen->time.sleep = ft_atoi(av[4]);
+	if (gen->nb_philo < 0 || gen->time.die < 0 || \
+	gen->time.eat < 0 || gen->time.sleep < 0)
+		ft_exit(gen, ARG_ERR);
 	if (ac == 6)
 	{
-		infos->nb_cycle = ft_atoi(av[5]);
-		if (infos->nb_cycle < 0)
-			ft_exit(infos, ERR_ARG);
+		gen->cycle = true;
+		gen->nb_cycle = ft_atoi(av[5]);
+		if (gen->nb_cycle < 0)
+			ft_exit(gen, ARG_ERR);
 	}
 	else
-		infos->nb_cycle = 1;
+		gen->nb_cycle = 1;
 }
 
-void	philo_set(t_infos *infos)
+void	philo_set(t_infos *gen)
 {
 	int	i;
 
-	infos->tab_philo = malloc(sizeof(t_philo) * infos->nb_philo);
-	if (!infos->tab_philo)
-		ft_exit(infos, ERR_MAL);
-	memset(infos->tab_philo, 0, sizeof(t_philo) * infos->nb_philo);
+	gen->tab_philo = malloc(sizeof(t_philo) * gen->nb_philo);
+	if (!gen->tab_philo)
+		ft_exit(gen, MALLOC_ERR);
+	memset(gen->tab_philo, 0, sizeof(t_philo) * gen->nb_philo);
 	i = -1;
-	while (++i < infos->nb_philo)
+	while (++i < gen->nb_philo)
 	{
-		infos->tab_philo[i].id = i + 1;
-		infos->tab_philo[i].infos = infos;
+		gen->tab_philo[i].id = i + 1;
+		gen->tab_philo[i].gen = gen;
 	}
 }

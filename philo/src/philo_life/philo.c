@@ -6,7 +6,7 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 14:09:18 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/09/19 10:37:51 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/09/20 16:30:12 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,8 @@ void	*philo_life(void *data)
 	philo = (t_philo *)data;
 	while (get_time() < philo->gen->time.start)
 		usleep(200);
-	if (!(philo->id % 2))
-	{
-		if (ft_time_lag(philo))
-			return (NULL);
-	}
+	if (!(philo->id % 2) && (ft_time_lag(philo)))
+		return (NULL);
 	while (philo->nb_meal < philo->gen->nb_cycle)
 	{
 		if (ft_eat(philo))
