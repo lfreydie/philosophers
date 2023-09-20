@@ -6,7 +6,7 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 11:06:39 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/09/19 15:25:45 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/09/20 11:44:31 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,11 @@ void	get_infos(t_infos *gen, int ac, char **av)
 	if (gen->nb_philo < 0 || gen->time.die < 0 || \
 	gen->time.eat < 0 || gen->time.sleep < 0)
 		ft_exit(gen, ARG_ERR);
-	t_max = gen->time.sleep + (gen->time.eat - gen->time.sleep);
+	t_max = gen->time.eat;
+	if (gen->time.eat < gen->time.sleep)
+		t_max = gen->time.sleep;
 	if (!(gen->nb_philo % 2) || gen->time.die >= 3 * t_max)
-		gen->time.think = gen->time.eat - gen->time.sleep + 5;
+		gen->time.think = gen->time.eat - gen->time.sleep + 3;
 	else
 		gen->time.think = gen->time.die;
 	if (ac == 6)
