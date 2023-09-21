@@ -6,7 +6,7 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/24 10:34:18 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/09/20 18:36:51 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/09/21 13:53:38 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef struct s_philo
 	pthread_t		th_philo;
 	int				last_meal;
 	int				nb_meal;
+	bool			full;
 	struct s_infos	*gen;
 }	t_philo;
 
@@ -70,6 +71,7 @@ typedef struct s_infos
 # define MALLOC_ERR	"Malloc failed"
 # define ERR_SEM 	"error semaphore\n"
 # define THREAD_ERR	"pthread_create failed"
+# define ENV_ERR	"environment failed"
 
 # define LOG_FORK	"has taken a fork\n"
 # define LOG_EAT	"is eating\n"
@@ -111,6 +113,7 @@ void	take_forks(t_philo *philo);
 void	ft_eat(t_philo *philo);
 //		DEAD
 void	philo_death(t_philo *philo);
+int		check_ate_full(t_philo *philo);
 int		death_check(t_infos *gen);
 //		THREAD
 void	*check_all(void *data);
@@ -120,6 +123,7 @@ void	*meal_check(void *data);
 void	ft_exit(t_infos *gen, char *msg);
 void	free_infos(t_infos *gen);
 void	sem_end(t_infos *gen);
+void	sem_unlink_all(void);
 void	ft_sem_close(t_infos *gen);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 11:06:39 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/09/20 18:04:24 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/09/21 14:05:21 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ t_infos	*ft_init(int ac, char **av)
 {
 	t_infos	*gen;
 
+	sem_unlink_all();
 	if (ac != 5 && ac != 6)
 		ft_exit(NULL, ARG_ERR);
 	gen = malloc(sizeof(*gen));
@@ -24,7 +25,7 @@ t_infos	*ft_init(int ac, char **av)
 	memset(gen, 0, sizeof(*gen));
 	get_infos(gen, ac, av);
 	gen->lock_write = ft_sem_open("/lock_write", 1);
-	gen->death = ft_sem_open("/death", 0);
+	gen->death = ft_sem_open("/death", 1);
 	gen->check = ft_sem_open("/check", 1);
 	gen->meal = ft_sem_open("/meal", 1);
 	gen->forks = ft_sem_open("/forks", gen->nb_philo);

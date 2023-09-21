@@ -6,18 +6,20 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/20 14:33:49 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/09/20 18:40:07 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/09/21 14:04:03 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-int	main(int ac, char **av)
+int	main(int ac, char **av, char **environ)
 {
 	t_infos	*gen;
 	int		status;
 	int		i;
 
+	if (!*environ)
+		ft_exit(NULL, ENV_ERR);
 	if (ac == 2 && !ft_memcmp(av[1], HELP, 6))
 		return (print_helper(), SUCCESS);
 	gen = ft_init(ac, av);

@@ -6,7 +6,7 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 14:09:18 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/09/20 19:09:31 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/09/21 14:19:50 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	fork_process(t_infos *gen)
 			exit (0);
 		}
 	}
+	sem_wait(gen->death);
 }
 
 void	ft_launch(t_philo *philo)
@@ -38,26 +39,25 @@ void	ft_launch(t_philo *philo)
 		usleep(200);
 	if (pthread_create(&philo->th_philo, NULL, check_all, philo))
 		return ;
-		// printf("0.1 id = %d\n", philo->id);
 	if (pthread_create(&philo->th_all, NULL, meal_check, philo))
-		return ;
-		// printf("0.2 id = %d\n", philo->id);
+		return (pthread_join(philo->th_philo, NULL), ft_sem_close(philo->gen));
 	if (!(philo->id % 2))
 	{
 		print_status(philo, LOG_THINK);
 		ft_wait(philo->gen->time.eat);
 	}
-	// printf("0 id = %d\n", philo->id);
-	while (death_check(philo->gen))
+	while (!death_check(philo->gen))
 	{
 		ft_eat(philo);
-		print_status(philo, LOG_THINK);
-		ft_wait(philo->gen->time.think);
+		if (check_ate_full(philo))
+			break ;
 		print_status(philo, LOG_SLEEP);
 		ft_wait(philo->gen->time.sleep);
+		print_status(philo, LOG_THINK);
+		ft_wait(philo->gen->time.think);
 	}
-	pthread_join(philo->th_all, NULL);
 	pthread_join(philo->th_philo, NULL);
+	pthread_join(philo->th_all, NULL);
 	ft_sem_close(philo->gen);
 }
 
@@ -68,4 +68,5 @@ void	one_philo(t_infos *gen)
 	printf("%d 1 %s", run_time(gen), LOG_FORK);
 	usleep(gen->time.die * 1000);
 	printf("%d 1 %s", run_time(gen), LOG_DEAD);
+	ft_sem_close(gen);
 }
