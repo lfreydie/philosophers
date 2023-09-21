@@ -6,7 +6,7 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 11:06:39 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/09/21 14:05:21 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/09/21 18:14:39 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	get_infos(t_infos *gen, int ac, char **av)
 	{
 		gen->cycle = true;
 		gen->nb_cycle = ft_atoi(av[5]);
-		if (gen->nb_cycle < 0)
+		if (gen->nb_cycle <= 0)
 			ft_exit(gen, ARG_ERR);
 	}
 	else
