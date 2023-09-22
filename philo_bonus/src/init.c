@@ -6,7 +6,7 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 11:06:39 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/09/21 18:14:39 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/09/22 16:39:55 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ sem_t	*ft_sem_open(const char *name, unsigned int value)
 
 void	get_infos(t_infos *gen, int ac, char **av)
 {
+	int	t_max;
+
 	gen->nb_philo = ft_atoi(av[1]);
 	gen->time.die = ft_atoi(av[2]);
 	gen->time.eat = ft_atoi(av[3]);
@@ -61,6 +63,13 @@ void	get_infos(t_infos *gen, int ac, char **av)
 	if (gen->nb_philo < 0 || gen->time.die < 0 || \
 	gen->time.eat < 0 || gen->time.sleep < 0)
 		ft_exit(gen, ARG_ERR);
+	t_max = gen->time.eat;
+	if (gen->time.eat < gen->time.sleep)
+		t_max = gen->time.sleep;
+	if (!(gen->nb_philo % 2) || gen->time.die >= 3 * t_max)
+		gen->time.think = gen->time.eat - gen->time.sleep + 3;
+	else
+		gen->time.think = gen->time.die;
 	if (ac == 6)
 	{
 		gen->cycle = true;

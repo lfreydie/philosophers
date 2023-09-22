@@ -6,7 +6,7 @@
 /*   By: lfreydie <lfreydie@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/05 13:22:50 by lfreydie          #+#    #+#             */
-/*   Updated: 2023/09/21 13:54:26 by lfreydie         ###   ########.fr       */
+/*   Updated: 2023/09/22 16:03:01 by lfreydie         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,13 @@ typedef struct s_infos
 
 # define SUCCESS	0
 # define FAILURE	1
-# define FAILED		"Failed"
-# define HELP		"--help"
-# define ARG_ERR	"Invalid argument"
-# define ARGN_ERR	"Invalid number of arguments"
-# define MALLOC_ERR	"Malloc failed"
-# define THREAD_ERR	"pthread_create failed"
-# define ENV_ERR	"environment failed"
+# define FAILED		"Failed\n"
+# define HELP		"--help\n"
+# define ARG_ERR	"Invalid argument\n"
+# define ARGN_ERR	"Invalid number of arguments\n"
+# define MALLOC_ERR	"Malloc failed\n"
+# define THREAD_ERR	"pthread_create failed\n"
+# define ENV_ERR	"environment failed\n"
 
 # define LOG_FORK	"has taken a fork\n"
 # define LOG_EAT	"is eating\n"
